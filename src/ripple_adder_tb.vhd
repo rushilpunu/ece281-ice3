@@ -42,15 +42,27 @@ begin
 	test_process : process 
 	begin
 	
-	   -- Test all zeros input
+	   -- 1. The min case: All zeros
 	   w_addends <= x"00"; w_Cin <= '0'; wait for 10 ns;
 	       assert (w_sum = x"0" and w_Cout = '0') report "bad with zeros" severity failure;
-       -- Test all ones input
+       
+       -- 1. The max case: All ones (15 + 15 + 1 = 31 -> Sum=15, Cout=1)
        w_addends <= x"FF"; w_Cin <= '1'; wait for 10 ns;
 	       assert (w_sum = x"F" and w_Cout = '1') report "bad with ones" severity failure;
-       -- TODO, a few other test cases
+       
+       w_addends <= x"00"; w_Cin <= '1'; wait for 10 ns;
+           assert (w_sum = x"1" and w_Cout = '0') report "bad with 0 + 0 + 1" severity failure;
+
+       w_addends <= x"0F"; w_Cin <= '1'; wait for 10 ns;
+           assert (w_sum = x"0" and w_Cout = '1') report "bad with carry ripple" severity failure;
+
+       w_addends <= x"75"; w_Cin <= '0'; wait for 10 ns; 
+           assert (w_sum = x"C" and w_Cout = '0') report "bad with 5 + 7 + 0" severity failure;
+
+       w_addends <= x"CA"; w_Cin <= '1'; wait for 10 ns;
+           assert (w_sum = x"7" and w_Cout = '1') report "bad with 10 + 12 + 1" severity failure;
 	
-		wait; -- wait forever
+		wait;
 	end process;	
 	-----------------------------------------------------	
 	
