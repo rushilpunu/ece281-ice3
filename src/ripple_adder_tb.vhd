@@ -61,7 +61,8 @@ begin
 
        w_addends <= x"CA"; w_Cin <= '1'; wait for 10 ns;
            assert (w_sum = x"7" and w_Cout = '1') report "bad with 10 + 12 + 1" severity failure;
-	
+       w_addends <= x"FF"; w_Cin <= '0'; wait for 10 ns;
+            assert (w_sum = x"E" and w_Cout = '1') report "bad with 15 + 15 + 0" severity failure;	
 		wait;
 	end process;	
 	-----------------------------------------------------	
